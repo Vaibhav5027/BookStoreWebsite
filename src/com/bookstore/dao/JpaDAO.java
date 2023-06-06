@@ -63,17 +63,14 @@ public class JpaDAO<E> {
      
      @SuppressWarnings("unchecked")
      
-	public Users findWithNamedQuery(String queryName,String paramName,String paramValue) {
+	public List<E> findWithNamedQuery(String queryName,String paramName,String paramValue) {
     	 System.out.println(paramName);
     	 System.out.println(paramValue);
     	 EntityManager entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
          query.setParameter(paramName, paramValue);
-          List<Users> user = query.getResultList();
-          if(user.isEmpty()||user==null)
-               return null;
-          else
-        	 return  user.get(0);
+          List<E> result = query.getResultList();
+          return result;
      }
      
      @SuppressWarnings("unchecked")

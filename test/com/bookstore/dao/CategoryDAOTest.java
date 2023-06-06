@@ -20,7 +20,6 @@ public class CategoryDAOTest {
 	}
 
 
-
 	@Test
 	public void testGet() {
 		Integer id=1;

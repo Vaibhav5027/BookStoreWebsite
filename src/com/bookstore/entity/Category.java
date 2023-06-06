@@ -21,7 +21,8 @@ import javax.persistence.Table;
 @Table(name = "category", catalog = "bookstoredb")
 @NamedQueries({
 	@NamedQuery(name="Category.findAll", query = "select c from Category c ORDER BY c.name"),
-	@NamedQuery(name = "Category.countAll", query = "SELECT COUNT(c) FROM Category c")
+	@NamedQuery(name = "Category.countAll", query = "SELECT COUNT(c) FROM Category c"),
+    @NamedQuery(name="Category.findByName" , query="Select c from Category c where c.name= :name")
 })
 public class Category implements java.io.Serializable {
 
@@ -43,6 +44,11 @@ public class Category implements java.io.Serializable {
 		this.name = name;
 		this.books = books;
 		this.bookTables = bookTables;
+	}
+
+	public Category(int id, String name2) {
+		this.categoryId=id;
+		this.name=name2;
 	}
 
 	@Id

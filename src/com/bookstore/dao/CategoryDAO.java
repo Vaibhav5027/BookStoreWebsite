@@ -3,6 +3,7 @@ package com.bookstore.dao;
 import java.util.List;
 
 import com.bookstore.entity.Category;
+import com.bookstore.entity.Users;
 
 public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category> {
 
@@ -36,4 +37,11 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 		return super.countWithNamedQuery("Category.countAll");
 	}
 
+	public Category findWithName(String categoryName) {
+	 List<Category> resultlist = findWithNamedQuery("Category.findByName","name",categoryName);
+		if(resultlist!=null && resultlist.size()>0)
+			return resultlist.get(0);
+	 
+	 return null;
+	}
 }

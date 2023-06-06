@@ -4,7 +4,7 @@
 </div>
 <div>
 <a href="list_users">Users</a> |&nbsp;&nbsp;&nbsp;
-<a href="categories">Categories </a>| &nbsp;&nbsp;&nbsp;
+<a href="list_category">Categories </a>| &nbsp;&nbsp;&nbsp;
 <a href="books">Books </a>| &nbsp;&nbsp;&nbsp;
 <a href="customers">Customers </a>| &nbsp;&nbsp;&nbsp;
 <a href="reviews">Reviews </a>| &nbsp;&nbsp;&nbsp;
