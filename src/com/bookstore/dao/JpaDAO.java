@@ -1,6 +1,9 @@
 package com.bookstore.dao;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -64,14 +67,23 @@ public class JpaDAO<E> {
      @SuppressWarnings("unchecked")
      
 	public List<E> findWithNamedQuery(String queryName,String paramName,String paramValue) {
-    	 System.out.println(paramName);
-    	 System.out.println(paramValue);
     	 EntityManager entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
          query.setParameter(paramName, paramValue);
           List<E> result = query.getResultList();
           return result;
      }
+     @SuppressWarnings("unchecked")
+ 	public List<E> findWithNamedQuery(String queryName,Map<String,Object> parameters) {
+ 		 EntityManager entityManager = entityManagerFactory.createEntityManager();
+    	 Query query = entityManager.createNamedQuery(queryName);
+    	  Set<Entry<String, Object>> entrySet = parameters.entrySet();
+    	  for (Entry<String, Object> entry : entrySet) {
+			query.setParameter(entry.getKey(), entry.getValue());
+		} 	 
+		List<E> result = query.getResultList();
+         return result;
+    }
      
      @SuppressWarnings("unchecked")
 	public List<E> findWithNamedQuery(String queryName){

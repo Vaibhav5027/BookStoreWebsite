@@ -7,6 +7,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.bookstore.dao.HashGenerator;
 import com.bookstore.dao.UserDAO;
 import com.bookstore.entity.Users;
 
@@ -55,6 +57,17 @@ public class UserServices {
 		Users user = userDAO.find(Users.class, id);
 		request.setAttribute("user", user);
 		String edit_page="user_form.jsp";
+		if (user == null) {
+			edit_page = "message.jsp";
+			String errorMessage = "Could not find user with ID " + id;
+			request.setAttribute("message", errorMessage);
+		} else {
+			// set password as null to make the password is left blank by default
+			// if left blank, the user's password won't be updated
+			// this is to work with the encrypted password feature
+			user.setPassword(null);
+			request.setAttribute("user", user);			
+		}
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(edit_page);
 		requestDispatcher.forward(request, response);
 	}
@@ -64,6 +77,7 @@ public class UserServices {
 		String email = request.getParameter("email");
 		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
+		String encryptedPassword=null;
 		System.out.println(email+ " " +fullname+" "+password);
 		Users userByEmail = userDAO.findByEmail(email);
 		Users userById = userDAO.get(id);
@@ -74,8 +88,16 @@ public class UserServices {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
 			requestDispatcher.forward(request, response);
 		}
-
-		Users user=new Users(id,email,fullname,password); 
+		else {
+			userById.setEmail(email);
+			userById.setFullName(fullname);
+			
+			if (password != null & !password.isEmpty()) {
+				 encryptedPassword = HashGenerator.generateMD5(password);
+				userById.setPassword(encryptedPassword);				
+			}
+		}
+		Users user=new Users(id,email,fullname,encryptedPassword); 
 		userDAO.update(user);
 		listUser(request,response,"User Updated Succesfully");
 
@@ -87,5 +109,23 @@ public class UserServices {
 	    userDAO.delete(id);
 		listUser(request, response,"user deleted succesfully");
 	}
-
+   public void login(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+	   String email = request.getParameter("email");
+	   String password = request.getParameter("password");
+	   
+	  
+	   boolean result = userDAO.checkLogin(email, password);
+	   if(result) {
+		   request.getSession().setAttribute("useremail",email);
+		   RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin/");
+		   requestDispatcher.forward(request, response);
+		   System.out.println("authentication done");
+	   }
+	   else {
+		   String messege="Login failed";
+		   request.setAttribute("message", messege);
+		   RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+		   requestDispatcher.forward(request, response);
+	   }
+   }
 }

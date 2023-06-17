@@ -26,7 +26,6 @@ public class HomeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoryDAO dao= new CategoryDAO();
 		List<Category> categoryList = dao.getAll();
-		System.out.println(categoryList);
 		request.setAttribute("categorylist", categoryList);
 		String homePage = "frontend/index.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(homePage);

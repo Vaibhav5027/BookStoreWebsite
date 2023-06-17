@@ -5,30 +5,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>BookStore Administration</title>
+<link rel="stylesheet" href="../css/styles.css">
 </head>
 <body >
 	<jsp:include page="header.jsp"></jsp:include>
 	<div align="center">
-		<div>
-			<h1>Administration content</h1>
+		<div class="pageheading">
+			<h1>Administration Dashboard</h1>
 		</div>
-		<div>
+		<div class="pageheading">
 			<h2>Quick Actions::</h2>
 			<a href="create_book"> New Book</a> &nbsp; <a href="create_user">
 				New User</a> &nbsp; <a href="create_category"> New Category</a> &nbsp; <a
 				href="create_customer"> New Customer</a> &nbsp;
 		</div>
-		<div>
+		<div class="pageheading">
 			<hr width="60%" />
-			<h4>Recent Sales ::</h4>
+			<h2>Recent Sales ::</h2>
 		</div>
-		<div>
+		<div class="pageheading">
 			<hr width="60%" />
-			<h4>Recent Reviews ::</h4>
+			<h2>Recent Reviews ::</h2>
 		</div>
-		<div>
+		<div class="pageheading">
 			<hr width="60%" />
-			<h4>Statistics ::</h4>
+			<h2>Statistics ::</h2>
 		</div>
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>

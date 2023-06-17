@@ -14,7 +14,7 @@
 	<div>
 		<c:forEach var="cat" items="${categorylist}">
 		<a href="view_category?categoryid=${cat.categoryId}">
-			<font size="+1"><c:out value=" ${cat.name}" ></c:out>|</font>
+			<font size="+1"><c:out value=" ${cat.name}" ></c:out></font>
 			</a>
 			&nbsp;
 		</c:forEach>

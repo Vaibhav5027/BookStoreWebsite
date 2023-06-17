@@ -1,8 +1,8 @@
 package com.bookstore.dao;
 
+import java.util.HashMap;
 import java.util.List;
-
-
+import java.util.Map;
 
 import com.bookstore.entity.Users;
 
@@ -12,6 +12,8 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 	}
 
 	public Users create(Users user) {
+		String encryptedPassword = HashGenerator.generateMD5(user.getPassword());
+		user.setPassword(encryptedPassword);
 		return super.create(user);
 	}
 	
@@ -48,5 +50,16 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 	    	 return users.get(0);
 	     else
 	    	 return null;
+	}
+	
+	public boolean checkLogin(String email ,String password) {
+		Map<String, Object> hashMap = new HashMap<>();
+		String encryptedPassword = HashGenerator.generateMD5(password);
+		hashMap.put("email", email);
+		hashMap.put("password", encryptedPassword);
+		List<Users> listresult = super.findWithNamedQuery("Users.findByEmailAndPassword", hashMap);
+		if(listresult.size()>=1)
+			return true;
+		return false;
 	}
 }

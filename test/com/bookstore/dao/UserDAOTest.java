@@ -22,9 +22,9 @@ public class UserDAOTest {
 	@Test
 	public void createUser() {
 		Users user=new Users();
-		user.setEmail("roshan@gmail.com");
-		user.setFullName("Roshan Kumar");
-		user.setPassword("roshan@123");
+		user.setEmail("shubham@gmail.com");
+		user.setFullName("Shubham Gill");
+		user.setPassword("shubham@123");
 		userDAO.create(user);
 
 	}
@@ -99,8 +99,19 @@ user.setUserId(5);
 		System.out.println(count);
 		assertEquals(2,count);
 	}
+	
+	
+	@Test
+	public void checkLogin() {
+		String email="gill@gmail.com";
+		String password="Shubham@9123";
+		boolean result = userDAO.checkLogin(email, password);
+		System.out.println(result +"***");
+	}
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
 	}
+	
+	
 }

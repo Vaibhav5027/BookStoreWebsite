@@ -75,7 +75,7 @@ public CategoryService() {
        Category category=new Category(id,name);
 		categoryDao.update(category);
 		
-		categoryList(request,response,"User Updated Succesfully");
+		categoryList(request,response,"Category Updated Succesfully");
 
 	}
 	
