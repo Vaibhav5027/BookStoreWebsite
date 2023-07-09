@@ -10,12 +10,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import com.bookstore.entity.Users;
 
 public class JpaDAO<E> {
 
 	private static EntityManagerFactory entityManagerFactory;
-	
+	EntityManager entityManager=null;
 	static {
 		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
 	}
@@ -23,8 +22,11 @@ public class JpaDAO<E> {
 	public JpaDAO() {
 	}
 
+	public EntityManager getEntityManger() {
+		return entityManagerFactory.createEntityManager();
+	}
 	public E create(E entity) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+	entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(entity);
 		entityManager.flush();
@@ -32,12 +34,12 @@ public class JpaDAO<E> {
 		
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		
+		entityManager.close();
 		return entity;
 	}
 	
 	public E update(E entity) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		 entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
 		
 		entity = entityManager.merge(entity);
@@ -49,51 +51,58 @@ public class JpaDAO<E> {
 	}
 	
 	public E find(Class<E> type,Object id) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		 entityManager = entityManagerFactory.createEntityManager();
 		E entity = entityManager.find(type, id);
 		if(entity!=null)
 		   entityManager.refresh(entity);
+		entityManager.close();
 		return entity;
 	}
 	
      public void delete(Class<E> type, Object id) {
-    	 EntityManager entityManager = entityManagerFactory.createEntityManager();
+    entityManager = entityManagerFactory.createEntityManager();
     	entityManager.getTransaction().begin();
     	 E entity = entityManager.getReference(type, id);
     	 entityManager.remove(entity);
     	 entityManager.getTransaction().commit();
-     }
-     
-     @SuppressWarnings("unchecked")
-     
-	public List<E> findWithNamedQuery(String queryName,String paramName,String paramValue) {
-    	 EntityManager entityManager = entityManagerFactory.createEntityManager();
+    	 entityManager.close();
+     } 
+	public List<E> findWithNamedQuery(String queryName,String paramName,Object paramValue) {
+    	  entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
          query.setParameter(paramName, paramValue);
-          List<E> result = query.getResultList();
+          @SuppressWarnings("unchecked")
+		List<E> result = query.getResultList();
+          entityManager.close();
           return result;
      }
+     
      @SuppressWarnings("unchecked")
  	public List<E> findWithNamedQuery(String queryName,Map<String,Object> parameters) {
- 		 EntityManager entityManager = entityManagerFactory.createEntityManager();
+ 		 entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
     	  Set<Entry<String, Object>> entrySet = parameters.entrySet();
     	  for (Entry<String, Object> entry : entrySet) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		} 	 
 		List<E> result = query.getResultList();
+		entityManager.close();
          return result;
     }
      
      @SuppressWarnings("unchecked")
 	public List<E> findWithNamedQuery(String queryName){
-    	 EntityManager entityManager = entityManagerFactory.createEntityManager();
+    	 entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
-    	 return query.getResultList();
+                  List resultList = query.getResultList();
+             	 entityManager.close();
+    	 return resultList;
      }
      public long countWithNamedQuery(String queryName) {
-    	 EntityManager entityManager = entityManagerFactory.createEntityManager();
+    	  entityManager = entityManagerFactory.createEntityManager();
     	 Query query = entityManager.createNamedQuery(queryName);
-    	 return (long) query.getSingleResult();
+    	 Long result=(long) query.getSingleResult();
+    	 
+    	 return result;
      }
 }

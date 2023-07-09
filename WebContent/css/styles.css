@@ -76,3 +76,21 @@ input {
 	font-style: italic;
 	padding-left: 20px;
 }
+div.center{
+	text-align: center;
+}
+div.book{
+	display:inline-block;
+	margin: 10px;
+	text-align: center;
+	
+}
+div.searchbookleftpart{
+	display: inline-block; margin: 20px; width: 10%
+}
+div.searchmiddlepart{
+display: inline-block; margin: 20px; vertical-align: top; width: 60%"
+}
+div.searchrightpart{
+	display: inline-block; margin: 20px; vertical-align: top;
+}

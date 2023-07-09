@@ -1,6 +1,7 @@
 package com.bookstore.entity;
 // Generated 4 Apr, 2023 1:36:58 PM by Hibernate Tools 5.2.12.Final
 
+import java.util.Base64;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +11,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -20,6 +24,17 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "book", catalog = "bookstoredb", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
+@NamedQueries({
+@NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
+	@NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title"),
+	@NamedQuery(name = "Book.countAll", query = "SELECT COUNT(b) FROM Book b"),
+    @NamedQuery(name="Book.listNewBook",query="SELECT b FROM Book b ORDER BY b.published desc"),
+    @NamedQuery(name = "Book.findByCategory", query = "SELECT b FROM Book b JOIN b.category c WHERE c.categoryId IN (SELECT cc.categoryId FROM Category cc WHERE cc.categoryId = :catId)")
+    @NamedQuery(name = "Book.countByCategory", query = "SELECT COUNT(b) FROM Book b "
+		+ "WHERE b.category.categoryId = :catId"),
+    @NamedQuery(name="Book.bySearch",query = "SELECT b  FROM Book b where b.title LIKE '%'|| :keyword || '%'  "
+    		+ "OR b.author LIKE '%'|| :keyword || '%'  ")})
+
 public class Book implements java.io.Serializable {
 
 	
@@ -31,6 +46,7 @@ public class Book implements java.io.Serializable {
 	private String description;
 	private String isbn;
 	private byte[] image;
+	private String base64Image;
 	private float price;
 	private Date published;
 	private Date updatedOn;
@@ -63,7 +79,7 @@ public class Book implements java.io.Serializable {
 		this.bookId = bookId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id", nullable = false)
 	public Category getCategory() {
 		return this.category;
@@ -147,4 +163,30 @@ public class Book implements java.io.Serializable {
 		this.updatedOn = updatedOn;
 	}
 
+	@Transient
+	public String getBase64Image() {
+		this.base64Image = Base64.getEncoder().encodeToString(this.image);
+		return this.base64Image;
+	}
+	
+	@Transient
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (bookId == null) {
+			if (other.bookId != null)
+				return false;
+		} else if (!bookId.equals(other.bookId))
+			return false;
+		return true;
+	}
 }

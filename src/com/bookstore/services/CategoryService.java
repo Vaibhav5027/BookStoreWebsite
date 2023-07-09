@@ -35,7 +35,6 @@ public CategoryService() {
 		 String name = request.getParameter("name");
 		 
 		   Category res = categoryDao.findWithName(name);
-		   System.out.println(res);
 		 if(res!=null) {
 				String message="Could not create category because category with this name is already available";
 				request.setAttribute("message", message);

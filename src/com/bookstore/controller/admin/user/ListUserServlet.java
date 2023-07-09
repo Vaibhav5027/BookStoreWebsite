@@ -13,7 +13,6 @@ import com.bookstore.services.UserServices;
 public class ListUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-   
     public ListUserServlet() {
         super();
     }
