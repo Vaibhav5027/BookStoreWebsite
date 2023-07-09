@@ -78,7 +78,6 @@ public class UserServices {
 		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		String encryptedPassword=null;
-		System.out.println(email+ " " +fullname+" "+password);
 		Users userByEmail = userDAO.findByEmail(email);
 		Users userById = userDAO.get(id);
 

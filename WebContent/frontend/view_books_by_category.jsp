@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>EverGreenBookStore</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="../css/styles.css">
+<title>List of Books</title>
 </head>
 <body>
-	<h1 align="center">Welcome to My book store</h1>
 	<jsp:include page="header.jsp"></jsp:include>
-	<div align="center">
-		<div align="center" style="width:80% ;margin: 0 auto">
-			<h1>New Books</h1>
+	<div align="left" style="width:80% ;margin: 0 auto">
+		<h1>${name}</h1>
 		<div style="col">
-			<c:forEach var="book" items="${bookList}">
-			<div style="float:left;  display: inline-block; margin: 10px ;align-content: center ">
+			<c:forEach var="book" items="${booklist}">
+			<div style="float:left;  display: inline-block; margin: 5px ;align-content: center ">
 				<div >
 				<a href="view_book?id=${book.bookId}">
 					<img src="data:image/jpg;base64,${book.base64Image}" width="84"
@@ -29,12 +27,7 @@
 				</div>
 			</c:forEach>
 		</div>
-	</div>	
 	</div>
-		<div align="center" style=" clear: both">
-		<h1>Most Selling Bos</h1>
-		<h1>Most Favorite Books</h1>
-		</div>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>
